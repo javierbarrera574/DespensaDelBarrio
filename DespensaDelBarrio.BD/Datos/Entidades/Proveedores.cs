@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DespensaDelBarrio.BD.Datos.Entidades;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -36,7 +36,8 @@ namespace DespensaBarrial.BD.Datos.Entidades
         //La llave {1} toma el dato de limite de la coleccion
         public int DNI { get; set; }
 
-        public HashSet<Categorias> categorias { get; set; }
+
+        public HashSet<ProveedoresProductos> ProveedorProductos { get; set; }
 
         public int AdministadorId { get; set; }
     }

@@ -19,5 +19,9 @@ namespace DespensaBarrial.BD.Datos.Entidades
 
         public ulong NumeroTelefono { get; set; }
 
+        public Administrador Administrador { get; set; }
+
+        public int AdministradorId { get; set; }
+
     }
 }

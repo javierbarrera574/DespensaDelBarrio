@@ -17,9 +17,9 @@ namespace DespensaBarrial.BD.Datos.Entidades
         [Required]
         public ulong NumeroTelefono { get; set; }
 
-        public Proveedores proveedor { get; set; }
-        
-        //me lleva al registro con la propiedad de navegacion
+        public List<Proveedores> Proveedores { get; set; }
+
+        public Empleado Empleado { get; set; }
 
 
     }

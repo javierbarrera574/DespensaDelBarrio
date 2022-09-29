@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DespensaDelBarrio.BD.Datos.Entidades;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DespensaBarrial.BD.Datos.Entidades
 {
-    public class Productos:EntityBase
+    public class Productos : EntityBase
     {
 
         [Required]
@@ -24,21 +25,21 @@ namespace DespensaBarrial.BD.Datos.Entidades
 
         public DateTime? FechaVencimientoProducto { get; set; }
 
-        //deberia crear una llave foranea o compuesta que relacione ,
-
-        //la tabla esta con la de proveedores
-
 
         [Required]
 
         [Precision(14, 2)]
-        public decimal PrecioProducto { get; set; }
+        public decimal PrecioProducto { get; set; } 
 
-        public int DepositoId { get; set; }
-        
-        //clave foranea que relaciona Deposito con Productos
+        public Deposito DepositoCantidad { get; set; }
 
-        public HashSet<Categorias> categorias { get; set; }
+
+        public List<Categorias> Categorias { get; set; }
+
+        public TipoCategorias TipoCategoriasEnProductos { get; set; }
+        public HashSet<ProveedoresProductos> ProveedorProductos { get; set; }
+
+        public int ProveedorId { get; set; }
 
 
     }
