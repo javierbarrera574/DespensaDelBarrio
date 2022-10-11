@@ -7,21 +7,19 @@ using System.Threading.Tasks;
 
 namespace DespensaBarrial.BD.Datos.Entidades
 {
-    public class Empleado:EntityBase
+    public class Empleado
     {
-        public string NombreEmpleado { get; set; }
+        public int Id { get; set; }
 
-        public ulong EdadEmpleado { get; set; }
+        [Required]
+        public string Nombre { get; set; }
 
-        public DateTime? FechaNacimiento { get; set; }
+        [Required]
+        public string Apellido { get; set; }
 
-        public string Domicilio { get; set; }
+        [Required]
 
-        public ulong NumeroTelefono { get; set; }
-
-        public Administrador Administrador { get; set; }
-
-        public int AdministradorId { get; set; }
+        public string Edad { get; set; }
 
     }
 }
