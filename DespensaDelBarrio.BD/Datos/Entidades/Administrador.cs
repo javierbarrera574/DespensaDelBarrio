@@ -6,13 +6,11 @@ namespace DespensaBarrial.BD.Datos.Entidades
     {
         public int Id { get; set; }
 
-        [Required]
         public string Nombre { get; set; }
 
-        [Required]
         public string NumeroTelefono { get; set; }
 
-        public List<Proveedor> Proveedores { get; set; }
+        public List<Proveedor?> Proveedores { get; set; }
 
     }
 }

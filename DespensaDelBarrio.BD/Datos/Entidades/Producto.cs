@@ -1,31 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-
-
-
-
-namespace DespensaBarrial.BD.Datos.Entidades
+﻿namespace DespensaBarrial.BD.Datos.Entidades
 {
-    public class Producto 
+    public class Producto
     {
 
         public int Id { get; set; }
 
-        [Required]
         public string NombreProducto { get; set; }
 
-        [Required]
         public string DescripcionProducto { get; set; }
 
         public string FechaVencimiento { get; set; }
 
-
-        [Required]
-
         public string PrecioProducto { get; set; }
 
-        public List<Proveedor> Proveedores { get; set; }
+        public int? ProveedorId { get; set; }
 
+        public Proveedor? Proveedor { get; set; }
+
+        public int? CategoriaId { get; set; }
+
+        public Categoria? Categoria { get; set; }
+
+        public int? DepositoId { get; set; }
+
+        public Deposito? Deposito { get; set; }
 
     }
 }

@@ -31,11 +31,9 @@ namespace DespensaDelBarrio.BD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumeroTelefono")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -52,11 +50,9 @@ namespace DespensaDelBarrio.BD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CodigoCategoria")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoCategoria")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -73,15 +69,15 @@ namespace DespensaDelBarrio.BD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CantidadEnEstante")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CategoriaEnEstante")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodigoEstante")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnidadMinima")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -98,15 +94,12 @@ namespace DespensaDelBarrio.BD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Apellido")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Edad")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -129,25 +122,29 @@ namespace DespensaDelBarrio.BD.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DescripcionProducto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FechaVencimiento")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NombreProducto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrecioProducto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProveedorId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoriaId");
+                    b.HasIndex("CategoriaId")
+                        .IsUnique()
+                        .HasFilter("[CategoriaId] IS NOT NULL");
 
                     b.HasIndex("DepositoId");
+
+                    b.HasIndex("ProveedorId");
 
                     b.ToTable("Productos");
                 });
@@ -164,49 +161,49 @@ namespace DespensaDelBarrio.BD.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CorreoElectronico")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumeroTelefono")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductoId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AdministradorId");
-
-                    b.HasIndex("ProductoId");
 
                     b.ToTable("Proveedores");
                 });
 
             modelBuilder.Entity("DespensaBarrial.BD.Datos.Entidades.Producto", b =>
                 {
-                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Categoria", null)
-                        .WithMany("Productos")
-                        .HasForeignKey("CategoriaId");
+                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Categoria", "Categoria")
+                        .WithOne("Producto")
+                        .HasForeignKey("DespensaBarrial.BD.Datos.Entidades.Producto", "CategoriaId");
 
-                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Deposito", null)
+                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Deposito", "Deposito")
                         .WithMany("Productos")
                         .HasForeignKey("DepositoId");
+
+                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Proveedor", "Proveedor")
+                        .WithMany("Productos")
+                        .HasForeignKey("ProveedorId");
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Deposito");
+
+                    b.Navigation("Proveedor");
                 });
 
             modelBuilder.Entity("DespensaBarrial.BD.Datos.Entidades.Proveedor", b =>
                 {
-                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Administrador", null)
+                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Administrador", "administrador")
                         .WithMany("Proveedores")
                         .HasForeignKey("AdministradorId");
 
-                    b.HasOne("DespensaBarrial.BD.Datos.Entidades.Producto", null)
-                        .WithMany("Proveedores")
-                        .HasForeignKey("ProductoId");
+                    b.Navigation("administrador");
                 });
 
             modelBuilder.Entity("DespensaBarrial.BD.Datos.Entidades.Administrador", b =>
@@ -216,7 +213,7 @@ namespace DespensaDelBarrio.BD.Migrations
 
             modelBuilder.Entity("DespensaBarrial.BD.Datos.Entidades.Categoria", b =>
                 {
-                    b.Navigation("Productos");
+                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("DespensaBarrial.BD.Datos.Entidades.Deposito", b =>
@@ -224,9 +221,9 @@ namespace DespensaDelBarrio.BD.Migrations
                     b.Navigation("Productos");
                 });
 
-            modelBuilder.Entity("DespensaBarrial.BD.Datos.Entidades.Producto", b =>
+            modelBuilder.Entity("DespensaBarrial.BD.Datos.Entidades.Proveedor", b =>
                 {
-                    b.Navigation("Proveedores");
+                    b.Navigation("Productos");
                 });
 #pragma warning restore 612, 618
         }

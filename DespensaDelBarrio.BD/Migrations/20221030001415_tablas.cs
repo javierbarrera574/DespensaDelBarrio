@@ -4,7 +4,7 @@
 
 namespace DespensaDelBarrio.BD.Migrations
 {
-    public partial class Tablas : Migration
+    public partial class tablas : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,8 @@ namespace DespensaDelBarrio.BD.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,8 +28,8 @@ namespace DespensaDelBarrio.BD.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TipoCategoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodigoCategoria = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TipoCategoria = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CodigoCategoria = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,9 +42,10 @@ namespace DespensaDelBarrio.BD.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CodigoEstante = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoriaEnEstante = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CantidadEnEstante = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CodigoEstante = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoriaEnEstante = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CantidadEnEstante = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnidadMinima = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,13 +58,34 @@ namespace DespensaDelBarrio.BD.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Edad = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Edad = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Empleados", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Proveedores",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorreoElectronico = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AdministradorId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Proveedores", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Proveedores_Administradores_AdministradorId",
+                        column: x => x.AdministradorId,
+                        principalTable: "Administradores",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -72,10 +94,11 @@ namespace DespensaDelBarrio.BD.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DescripcionProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NombreProducto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DescripcionProducto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaVencimiento = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PrecioProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrecioProducto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProveedorId = table.Column<int>(type: "int", nullable: true),
                     CategoriaId = table.Column<int>(type: "int", nullable: true),
                     DepositoId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -92,39 +115,19 @@ namespace DespensaDelBarrio.BD.Migrations
                         column: x => x.DepositoId,
                         principalTable: "Depositos",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Proveedores",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CorreoElectronico = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdministradorId = table.Column<int>(type: "int", nullable: true),
-                    ProductoId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Proveedores", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Proveedores_Administradores_AdministradorId",
-                        column: x => x.AdministradorId,
-                        principalTable: "Administradores",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Proveedores_Productos_ProductoId",
-                        column: x => x.ProductoId,
-                        principalTable: "Productos",
+                        name: "FK_Productos_Proveedores_ProveedorId",
+                        column: x => x.ProveedorId,
+                        principalTable: "Proveedores",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_CategoriaId",
                 table: "Productos",
-                column: "CategoriaId");
+                column: "CategoriaId",
+                unique: true,
+                filter: "[CategoriaId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_DepositoId",
@@ -132,26 +135,20 @@ namespace DespensaDelBarrio.BD.Migrations
                 column: "DepositoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Productos_ProveedorId",
+                table: "Productos",
+                column: "ProveedorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Proveedores_AdministradorId",
                 table: "Proveedores",
                 column: "AdministradorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Proveedores_ProductoId",
-                table: "Proveedores",
-                column: "ProductoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Empleados");
-
-            migrationBuilder.DropTable(
-                name: "Proveedores");
-
-            migrationBuilder.DropTable(
-                name: "Administradores");
 
             migrationBuilder.DropTable(
                 name: "Productos");
@@ -161,6 +158,12 @@ namespace DespensaDelBarrio.BD.Migrations
 
             migrationBuilder.DropTable(
                 name: "Depositos");
+
+            migrationBuilder.DropTable(
+                name: "Proveedores");
+
+            migrationBuilder.DropTable(
+                name: "Administradores");
         }
     }
 }
